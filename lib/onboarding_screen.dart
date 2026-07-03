@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
+import 'features/home/home.dart';
+
 class OnBoardingScreen extends StatelessWidget {
+  static const String route = "onboarding";
   const OnBoardingScreen({super.key});
 
   @override
@@ -155,7 +158,7 @@ class OnBoardingScreen extends StatelessWidget {
                   ),
                 ),
                 onDone: () {
-                  // On button pressed
+                  Navigator.pushNamedAndRemoveUntil(context, Home.homeRoute, (_)=>false);
                 },
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:islami_friday/features/home/home.dart';
 import 'package:islami_friday/onboarding_screen.dart';
 
 void main() {
@@ -12,7 +13,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnBoardingScreen(),
+      initialRoute: Home.homeRoute,
+      routes: {
+        OnBoardingScreen.route : (_)=>OnBoardingScreen(),
+        Home.homeRoute : (_)=>Home()
+      },
     );
   }
 }
+//core | utils
+// features
+
