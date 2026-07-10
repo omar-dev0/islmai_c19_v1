@@ -3,6 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:islami_friday/core/app_colors.dart';
 import 'package:islami_friday/features/home/tabs/hadith/hadith_tab.dart';
 import 'package:islami_friday/features/home/tabs/quran/quran_tab.dart';
+import 'package:islami_friday/features/home/tabs/radio/radio_tab.dart';
+import 'package:islami_friday/features/home/tabs/sebha/sebha_tab.dart';
+import 'package:islami_friday/features/home/tabs/time/time_tab.dart';
 
 class Home extends StatefulWidget {
   static const String homeRoute = "home";
@@ -16,9 +19,9 @@ class _HomeState extends State<Home> {
   List<Widget> tabs = [
     QuranTab(),
     HadithTab(),
-    QuranTab(),
-    HadithTab(),
-    QuranTab(),
+    SebhaTab(),
+    RadioTab(),
+    TimeTab(),
   ];
   var index = 0;
   @override

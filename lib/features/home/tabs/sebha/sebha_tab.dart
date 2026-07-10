@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class HadithTab extends StatelessWidget {
-  const HadithTab({super.key});
+class SebhaTab extends StatelessWidget {
+  const SebhaTab({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        "Hadith Tab",
+        "Sebha Tab",
         style: Theme.of(context).textTheme.headlineLarge,
       ),
     );

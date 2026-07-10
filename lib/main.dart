@@ -9,18 +9,19 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  //comment
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: Home.homeRoute,
       routes: {
-        OnBoardingScreen.route : (_)=>OnBoardingScreen(),
-        Home.homeRoute : (_)=>Home()
+        OnBoardingScreen.route: (_) => OnBoardingScreen(),
+        Home.homeRoute: (_) => Home(),
       },
     );
   }
 }
 //core | utils
 // features
-
