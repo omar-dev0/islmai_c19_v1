@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:islami_friday/core/app_colors.dart';
+import 'package:islami_friday/core/cache_helper.dart';
 import 'package:islami_friday/core/data/sura_data.dart';
 import 'package:islami_friday/features/home/tabs/quran/data/sura_model.dart';
 import 'package:islami_friday/features/home/tabs/quran/widgets/most_recent_widget.dart';
@@ -108,24 +109,50 @@ class _QuranTabState extends State<QuranTab> {
               ),
             ),
             SizedBox(height: 20),
-            Text(
-              'Most Recent',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
+            if (CacheHelper.getData(key: "last_sura") != null) ...[
+              Text(
+                'Most Recent',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              height: 150,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => MostRecentWidget(),
-                separatorBuilder: (context, index) => SizedBox(width: 10),
-                itemCount: 10,
+              SizedBox(height: 20),
+              SizedBox(
+                height: 150,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => MostRecentWidget(
+                    suraModel: SuraModel(
+                      english:
+                          englishSurah[int.parse(
+                                CacheHelper.getData(key: "last_sura")[index],
+                              ) -
+                              1],
+                      number: int.parse(
+                        CacheHelper.getData(key: "last_sura")[index],
+                      ),
+                      verses:
+                          ayaNumber[int.parse(
+                                CacheHelper.getData(key: "last_sura")[index],
+                              ) -
+                              1],
+                      arabic:
+                          arabicSura[int.parse(
+                                CacheHelper.getData(key: "last_sura")[index],
+                              ) -
+                              1],
+                    ),
+                  ),
+                  separatorBuilder: (context, index) => SizedBox(width: 10),
+                  itemCount: CacheHelper.getData(key: "last_sura") != null
+                      ? CacheHelper.getData(key: "last_sura").length
+                      : 0,
+                ),
               ),
-            ),
+            ],
+
             SizedBox(height: 14),
             Text(
               'Sura List',
@@ -159,7 +186,28 @@ class _QuranTabState extends State<QuranTab> {
                           verses: ayaNumber[suraIndex],
                         );
                         return InkWell(
-                          onTap: () {
+                          onTap: () async {
+                            final current = CacheHelper.getData(
+                              key: "last_sura",
+                            );
+                            final lastSuraList = current != null
+                                ? List<String>.from(current)
+                                : <String>[];
+
+                            final suraNumber = suraModel.number.toString();
+
+                            lastSuraList
+                              ..remove(suraNumber)
+                              ..insert(0, suraNumber);
+
+                            await CacheHelper.setData(
+                              key: "last_sura",
+                              value:
+                                  lastSuraList, // a List<String>, so setStringList works
+                            );
+                            setState(
+                              () {},
+                            ); // Refresh the UI to reflect the updated list
                             Navigator.pushNamed(
                               context,
                               SuraDetailsScreen.routeName,

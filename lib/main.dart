@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:islami_friday/core/cache_helper.dart';
 import 'package:islami_friday/features/home/home.dart';
 import 'package:islami_friday/features/sura_details/sura_details_screen.dart';
 import 'package:islami_friday/onboarding_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await CacheHelper.init();
   runApp(MyApp());
 }
 
