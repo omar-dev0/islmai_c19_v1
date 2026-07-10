@@ -1,7 +1,12 @@
 class SuraModel {
-  String arabic ;
+  String arabic;
   int number;
   String english;
-  String verteces;
-  SuraModel({required this.arabic , required this.english , required this.verteces , required this.number});
+  String verses;
+  SuraModel({
+    required this.arabic,
+    required this.english,
+    required this.verses,
+    required this.number,
+  });
 }

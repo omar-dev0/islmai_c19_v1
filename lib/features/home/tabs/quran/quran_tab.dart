@@ -5,9 +5,33 @@ import 'package:islami_friday/core/data/sura_data.dart';
 import 'package:islami_friday/features/home/tabs/quran/data/sura_model.dart';
 import 'package:islami_friday/features/home/tabs/quran/widgets/most_recent_widget.dart';
 import 'package:islami_friday/features/home/tabs/quran/widgets/sura_item.dart';
+import 'package:islami_friday/features/sura_details/sura_details_screen.dart';
 
-class QuranTab extends StatelessWidget {
-  const QuranTab({super.key});
+class QuranTab extends StatefulWidget {
+  QuranTab({super.key});
+
+  @override
+  State<QuranTab> createState() => _QuranTabState();
+}
+
+class _QuranTabState extends State<QuranTab> {
+  List<int> filteredIndices = List.generate(englishSurah.length, (i) => i);
+
+  void searchSura(String value) {
+    if (value.isEmpty) {
+      filteredIndices = List.generate(englishSurah.length, (i) => i);
+    } else {
+      final query = value.toLowerCase();
+      filteredIndices = [];
+      for (int i = 0; i < englishSurah.length; i++) {
+        if (englishSurah[i].toLowerCase().contains(query) ||
+            arabicSura[i].contains(value)) {
+          filteredIndices.add(i);
+        }
+      }
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +41,12 @@ class QuranTab extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/home_screen.png'),
-          fit: .cover,
+          fit: BoxFit.cover,
         ),
       ),
       child: SafeArea(
         child: Column(
-          crossAxisAlignment: .stretch,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Image.asset(
               'assets/images/top_bar_logo.png',
@@ -30,25 +54,33 @@ class QuranTab extends StatelessWidget {
               height: 200,
             ),
             Padding(
-              padding: .only(right: 16),
+              padding: EdgeInsets.only(right: 16),
               child: TextField(
+                style: TextStyle(
+                  color: AppColors.primaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+                onChanged: (value) {
+                  searchSura(value);
+                },
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
-                    borderRadius: .circular(10),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
                       color: AppColors.primaryColor,
                       width: 1,
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: .circular(10),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
                       color: AppColors.primaryColor,
                       width: 1,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: .circular(10),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
                       color: AppColors.primaryColor,
                       width: 1,
@@ -60,15 +92,15 @@ class QuranTab extends StatelessWidget {
                   hintStyle: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
-                    fontWeight: .w700,
+                    fontWeight: FontWeight.w700,
                   ),
                   prefixIcon: Padding(
-                    padding: .all(15),
+                    padding: EdgeInsets.all(15),
                     child: SvgPicture.asset(
                       'assets/svg/quran.svg',
                       colorFilter: ColorFilter.mode(
                         AppColors.primaryColor,
-                        .srcIn,
+                        BlendMode.srcIn,
                       ),
                     ),
                   ),
@@ -80,7 +112,7 @@ class QuranTab extends StatelessWidget {
               'Most Recent',
               style: TextStyle(
                 color: Colors.white,
-                fontWeight: .w700,
+                fontWeight: FontWeight.w700,
                 fontSize: 16,
               ),
             ),
@@ -88,7 +120,7 @@ class QuranTab extends StatelessWidget {
             SizedBox(
               height: 150,
               child: ListView.separated(
-                scrollDirection: .horizontal,
+                scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) => MostRecentWidget(),
                 separatorBuilder: (context, index) => SizedBox(width: 10),
                 itemCount: 10,
@@ -99,29 +131,51 @@ class QuranTab extends StatelessWidget {
               'Sura List',
               style: TextStyle(
                 color: Colors.white,
-                fontWeight: .w700,
+                fontWeight: FontWeight.w700,
                 fontSize: 16,
               ),
             ),
             SizedBox(height: 10),
             Expanded(
-              child: ListView.separated(
-                itemBuilder: (context, index) => SuraItem(
-                  suraModel: SuraModel(
-                    number: index + 1,
-                    arabic: arabicSura[index],
-                    english: englishSurah[index],
-                    verteces: ayaNumber[index],
-                  ),
-                ),
-                separatorBuilder: (context, index) => Divider(
-                  height: 30,
-                  indent: 64,
-                  endIndent: 64,
-                  color: Colors.white,
-                ),
-                itemCount: 144,
-              ),
+              child: filteredIndices.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No Sura Found',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
+                      ),
+                    )
+                  : ListView.separated(
+                      itemCount: filteredIndices.length,
+                      itemBuilder: (context, index) {
+                        final suraIndex = filteredIndices[index];
+                        final suraModel = SuraModel(
+                          number: suraIndex + 1,
+                          arabic: arabicSura[suraIndex],
+                          english: englishSurah[suraIndex],
+                          verses: ayaNumber[suraIndex],
+                        );
+                        return InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              SuraDetailsScreen.routeName,
+                              arguments: suraModel,
+                            );
+                          },
+                          child: SuraItem(suraModel: suraModel),
+                        );
+                      },
+                      separatorBuilder: (context, index) => Divider(
+                        height: 30,
+                        indent: 64,
+                        endIndent: 64,
+                        color: Colors.white,
+                      ),
+                    ),
             ),
           ],
         ),

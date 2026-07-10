@@ -41,7 +41,7 @@ class SuraItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${suraModel.verteces} Verses  ',
+                  '${suraModel.verses} Verses  ',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 14,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:islami_friday/features/home/home.dart';
+import 'package:islami_friday/features/sura_details/sura_details_screen.dart';
 import 'package:islami_friday/onboarding_screen.dart';
 
 void main() {
@@ -19,9 +20,11 @@ class MyApp extends StatelessWidget {
       routes: {
         OnBoardingScreen.route: (_) => OnBoardingScreen(),
         Home.homeRoute: (_) => Home(),
+        SuraDetailsScreen.routeName: (_) => SuraDetailsScreen(),
       },
     );
   }
 }
+
 //core | utils
 // features
