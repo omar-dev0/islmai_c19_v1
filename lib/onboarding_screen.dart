@@ -158,7 +158,11 @@ class OnBoardingScreen extends StatelessWidget {
                   ),
                 ),
                 onDone: () {
-                  Navigator.pushNamedAndRemoveUntil(context, Home.homeRoute, (_)=>false);
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    Home.homeRoute,
+                    (_) => false,
+                  );
                 },
               ),
             ),

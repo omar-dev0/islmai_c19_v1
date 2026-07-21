@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:islami_friday/core/cache_helper.dart';
+import 'package:islami_friday/core/my_theme_data.dart';
+import 'package:islami_friday/features/hadeth_details/hadeth_details_screen.dart';
 import 'package:islami_friday/features/home/home.dart';
 import 'package:islami_friday/features/sura_details/sura_details_screen.dart';
 import 'package:islami_friday/onboarding_screen.dart';
@@ -19,11 +21,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: MyThemeData.lightTheme,
+      darkTheme: MyThemeData.darkTheme,
+      themeMode: ThemeMode.light,
       initialRoute: Home.homeRoute,
       routes: {
         OnBoardingScreen.route: (_) => OnBoardingScreen(),
         Home.homeRoute: (_) => Home(),
         SuraDetailsScreen.routeName: (_) => SuraDetailsScreen(),
+        HadethDetailsScreen.routeName: (_) => HadethDetailsScreen(),
       },
     );
   }
